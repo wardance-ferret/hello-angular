@@ -12,6 +12,8 @@
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <script src="node_modules/rxjs/bundles/Rx.js"></script>
     <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+    <!-- include the optional angular component router, and add a base route "/" in the header -->
+    <script src="node_modules/angular2/bundles/router.dev.js"></script>
     <!-- 2. Configure SystemJS -->
     <script>
       System.config({
@@ -25,6 +27,8 @@
       System.import('app/main')
             .then(null, console.error.bind(console));
     </script>
+    <!-- must add this b/c angular routing is not required, and so there is no base route??  -->
+    <base href="/">
   </head>
   <!-- 3. Display the application -->
   <body>
