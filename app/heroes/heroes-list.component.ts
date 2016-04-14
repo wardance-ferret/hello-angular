@@ -4,11 +4,13 @@ The heroes component for hello-angular.
  */
 import {Component, OnInit} from 'angular2/core';
 import {Hero} from './hero';
-import {HeroDetailComponent} from './hero-detail-component';
+import {HeroDetailComponent} from './hero-detail.component';
 //after we refactored, both heroes-components and app-component
 //know what a HeroService is but there is just one copy of that HeroService,
 //
-import {HeroService} from './mock-hero.service';
+import {Router, RouteParams} from 'angular2/router';
+
+import {HeroService} from './hero.service';
 
 //var title = 'Some Unrelated Title for Checking Scope';
     //notice the {{}} for one-way data binding
@@ -16,28 +18,36 @@ import {HeroService} from './mock-hero.service';
     //element marked with the directive and child nodes.  ngIf, ngFor and other structural directives change the structure of the DOM
     //Event bind or "($event)": when user clicks on list item, the component must have an onSelect method defined. angular event bindings will respond to any DOM event
     //we're not done with the list
-    //Property bind or "[$property]:"  we bind a boolean expression "hero === selectedHero" to the name of the CSS class, selected.  which way does data flow?  if the model says that that particular hero is selected, then the value of true flows from the model to the view.  This bind is a property bind.
+    //Property bind or "[$property]:"  we bind a boolean expression "hero === selectedHero" to the name of the CSS class, selected.  which way does data flow?  if the model says that that particular hero is selected, then the value of true flows from the model to the view.  This bind is a property bind.  Michael used terms "input" for param binding [], something changed the model and the component should know about it. Then there is the output for event binding (), something changed in the view and the component should know about it.
+    ////Michael asked about the annotations @Input() and @Output().  With @Input(), the statement [class.myselected]="hero === selectedHero" passes the selected hero "selectHero" from this, the parent component, HeroesListComponent to HeroesDetailComponent (CONFIRM THIS)
     //I use directives to register my own custom directives
     //<my-hero-detail> tag means that HeroesComponent creates a child instance of HeroDetailComponent (huh? you mean it's own private object of that class??). 
     //when I use providers to register services, I'm telling Angular to provide a fresh service whenever it creates a new HeroesComponent.
     //I can call getHeroes() on initialization of HeroesComponent (WITHOUT CALLING CONSTRUCTOR) by adding this.getHeroes() to the impl of the ngOnInit lifecycle hook
     //the problem is that getting json back from the service could take a while, and we don't want the browser to have to wait...so the service needs to make a promise (I'll call back later when my results are ready), and the caller needs to act on the promise.
+    //Next, it's bad that component's hero property is set to a hero object using a M->V binding.
+    //<my-hero-detail [hero]="selectedHero"></my-hero-detail>
 
+//a class is just a class until we tell A2 it's a component by adding the metadata
 @Component({
     //note how we use a comma for a property on a decorator
     selector: 'my-heroes',
     template: `
-              <h1>{{title}}</h1>
               <h2>HEROES</h2>
               <ul class="items">
-                 <li *ngFor="#hero of asArray(heroes)" 
+                 <li *ngFor="#hero of heroes" 
                   [class.myselected]="hero === selectedHero"
                  (click)="onSelect(hero)"
                  >
                    <span class="badge">{{hero.id}}</span> {{hero.name}}
                  </li>
               </ul>
-              <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+              <div *ngIf="selectedHero">
+                <h2>
+                  {{selectedHero | uppercase}} is my hero
+                </h2> 
+                <button (click)="gotoDetail()">View Details</button> 
+              </div>
                 `,
     //styles for my-heroes, the component!
     styles:[`
@@ -90,7 +100,7 @@ import {HeroService} from './mock-hero.service';
               }
     `],
     directives: [HeroDetailComponent]
-    //the service HeroService was promoted from HeroesComponent to AppComponent, so I commented this out so angular doesn't create a 2nd copy of the service
+    //the service HeroService was promoted from HeroesComponent to AppComponent, so I commented the next line out.  Doing this ensures that Angular treats the HeroService instance as a singleton, available to all components.
     //providers: [HeroService] 
 })
 //this means to export a TypeScript class definition
@@ -114,9 +124,12 @@ export class HeroListComponent implements OnInit {
 
 
     onSelect(hero: Hero) { 
-      //this.selectedHero = hero; this.title = 'Tour of Heroes:\n'+hero.name;
+      
+      //this.selectedHero = hero;
       //the router needs a destination and the (required) route params and the (optional) query params.
       //it looks like the HeroDetailComponent is implied by HeroDetail.
+      
+      //the following isn't used if we have an authentication layer
       this._router.navigate(['HeroDetail', { id:hero.id }]);
     }
 
@@ -126,20 +139,26 @@ export class HeroListComponent implements OnInit {
     */
     constructor(
       private _heroService: HeroService,
-      private _routeParams
+      private _routeParams: RouteParams,
       private _router: Router
     ){}
 
     //do not invoke getHeroes in the constructor
     getHeroes() {
-        this.heroes = this._heroService.getHeroesSlowly().then(heroes => this.heroes = heroes);    
+        this._heroService.getHeroes()
+        .map(response => response.json())
+        .subscribe(
+            data => this.heroes = data,
+            error => console.log(error)
+        );    
     }
 
     ngOnInit(){
         this.getHeroes();
     }
 
+    /** not needed with angular 2 beta 14 
     asArray(val){
        return Array.from(val);
-    }
+    }*/
 }

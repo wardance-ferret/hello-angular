@@ -1,8 +1,14 @@
 <html>
   <head>
-    <title>Angular 2 QuickStart</title>
+    <title>Angular 2 Tour of Heroes</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">    
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Auth0 Lock script -->
+    <!-- what does this do? -->
+    <script src="//cdn.auth0.com/js/lock-9.0.min.js"></script>
+    
     <!-- 1. Load libraries -->
     <!-- IE required polyfills, in this exact order -->
     <script src="node_modules/es6-shim/es6-shim.min.js"></script>
@@ -14,20 +20,31 @@
     <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
     <!-- include the optional angular component router, and add a base route "/" in the header -->
     <script src="node_modules/angular2/bundles/router.dev.js"></script>
+    <!-- include the http component -->
+    <script src="node_modules/angular2/bundles/http.dev.js"></script>
     <!-- 2. Configure SystemJS -->
+    <!-- Why can't angular-jwt be sourced like a script? -->
+    <!-- include in map?! "dotenv": "node_modules/dotenv/lib/main.js" -->
     <script>
       System.config({
         packages: {        
           app: {
             format: 'register',
             defaultExtension: 'js'
-          }
+          },
+          "angular2-jwt": {
+            defaultExtension: 'js'
+          },
+        },  
+        map: {
+          "angular2-jwt": "node_modules/angular2-jwt/angular2-jwt.js",
         }
       });
       System.import('app/main')
             .then(null, console.error.bind(console));
     </script>
     <!-- must add this b/c angular routing is not required, and so there is no base route??  -->
+    <!-- If the base element is not added to the doc, then I get an unhandled promise rejection, error during instantiation of LocationStrategy (RouterLink -> Router -> Location -> LocationStrategy)-->
     <base href="/">
   </head>
   <!-- 3. Display the application -->
@@ -35,3 +52,8 @@
     <my-app>Loading...</my-app>
   </body>
 </html>
+
+
+
+
+

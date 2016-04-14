@@ -4,6 +4,7 @@
 
  */
 import {Injectable} from 'angular2/core';
+import {Hero} from './hero';
 import {HEROES} from './mock-heroes';
 
 @Injectable()
@@ -16,6 +17,13 @@ export class HeroService {
         return Promise.resolve(HEROES);
     }
 
+    //(1) IN WITH THE NEW:  service will return a single hero, get all objects (models) and filter on hero.id
+    getHero(id: number){
+        return Promise.resolve(HEROES).then(heroes => heroes.filter(hero => hero.id === id)[0]
+        );
+    }
+
+    //next step is to mock up an http service returning json, not just use this fake timeout.
     getHeroesSlowly(){
       return new Promise<Hero[]>(resolve=>setTimeout(()=>resolve(HEROES), 2000))
     }

@@ -1,0 +1,15 @@
+  <h2>HEROES</h2>
+  <ul class="items">
+     <li *ngFor="#hero of heroes" 
+      [class.myselected]="hero === selectedHero"
+     (click)="onSelect(hero)"
+     >
+       <span class="badge">{{hero.id}}</span> {{hero.name}}
+     </li>
+  </ul>
+  <div *ngIf="selectedHero">
+    <h2>
+      {{selectedHero | uppercase}} is my hero!
+    </h2> 
+    <button (click)="gotoDetail()">View Secret Details</button> 
+  </div>

@@ -1,8 +1,13 @@
 /** app.component.ts */
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
-import {HeroService} from './heroes/mock-hero.service';
+import {DashboardComponent} from './dashboard.component';
+import {HeroService} from './heroes/hero.service';
 import {HeroListComponent} from './heroes/heroes-list.component';
+import {SecretHeroListComponent} from './heroes/secret-heroes-list.component';
+import {HeroDetailComponent} from './heroes/hero-detail.component';
+import {SecretHeroDetailComponent} from './heroes/secret-hero-detail.component';
+import { AuthService } from './auth.service';
 
 //what causes this?
 //angular2.dev.js:23730 EXCEPTION: Cannot resolve all parameters for 'HeroesComponent'(?). Make sure that all the parameters are decorated with Inject or have valid type annotations and that 'HeroesComponent' is decorated with Injectable. (This error is caused in HeroesComponent if the HeroService is not included.
@@ -16,9 +21,12 @@ import {HeroListComponent} from './heroes/heroes-list.component';
         template: `
             <h1>{{title}}</h1>
             <nav>
-            <!--see nav tag nestles the two -->
-            <a [routerLink]="['Heroes']">Heroes</a>
-            <a [routerLink]="['Dashboard']">Dashboard</a>
+                <!--see nav tag nestles the two -->
+                <a [routerLink]="['Heroes']">Heroes</a>
+                <a [routerLink]="['Secret Heroes']" *ngIf="auth.loggedIn()">Secret Heroes</a>
+                <a (click)="auth.login()" *ngIf="!auth.loggedIn()">Login</a>                
+                <a [routerLink]="['Dashboard']">Dashboard</a>
+                <a [routerLink]="['Dashboard']" (click)="auth.logout()" *ngIf="auth.loggedIn()">Logout</a>
             <nav>
             <router-outlet></router-outlet>
        `,
@@ -33,14 +41,30 @@ import {HeroListComponent} from './heroes/heroes-list.component';
 //route using an optional property, saves me having to define /
 @RouteConfig(
 [
-    {path:'/crisis-center', name: 'CrisisCenter', component: CrisisListComponent},
     {path:'/heroes', name: 'Heroes', component: HeroListComponent},
-    {path:'/hero/:id', name: 'HeroDetail', component:HeroDetailComponent}
+    {path:'/hero/:id', name: 'HeroDetail', component:HeroDetailComponent},
     {path: '/dashboard', name: 'Dashboard',
      component: DashboardComponent, useAsDefault: true        
+    },
+    {path: '/secret-heroes',
+     name: 'Secret Heroes',
+     component: SecretHeroListComponent
+     },
+    {path: '/secret/hero/:id',
+     name: 'SecretHeroDetail',
+     component: SecretHeroDetailComponent
     }
+
 ]
 )
 export class AppComponent{
     title = 'Tour of Heroes';
+
+    constructor(private auth: AuthService){}
+
+    ngOnInit(){
+        this.auth.getAuthDetails();
+    }
+
 }
+
