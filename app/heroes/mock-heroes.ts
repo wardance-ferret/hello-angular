@@ -4,15 +4,14 @@ import {Hero} from './hero';
 
 //declare variable HEROES which we will say is Hero[] array
 export var HEROES: Hero[] = [
-  { "id": 11, "name": "Mr. Calm" },
-  { "id": 12, "name": "Senestro" },
-  { "id": 13, "name": "Programmer Man" },
-  { "id": 14, "name": "Brainstem" },
-  { "id": 15, "name": "War Woman" },
-  { "id": 16, "name": "The Torch" },
-  { "id": 17, "name": "False Step" },
-  { "id": 18, "name": "Dr. Groove" },
-  { "id": 19, "name": "Tidal Wave" },
-  { "id": 20, "name": "Red Tsunami" },
-  { "id": 21, "name": "X" }
+  { "id": 1, "name": "Mr. Calm" },
+  { "id": 2, "name": "Gloria Mundi" },
+  { "id": 3, "name": "Programmer Man" },
+  { "id": 4, "name": "Brainstem" },
+  { "id": 5, "name": "War Woman" },
+  { "id": 6, "name": "The Torch" },
+  { "id": 7, "name": "False Step" },
+  { "id": 8, "name": "Dr. Groove" },
+  { "id": 9, "name": "Tidal Wave" },
+  { "id": 10, "name": "Red Tsunami" },
 ];

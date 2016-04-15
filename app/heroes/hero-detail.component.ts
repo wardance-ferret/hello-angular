@@ -10,13 +10,12 @@ import {RouteParams} from 'angular2/router';
 //@Input() is related to the two-way bound input element in this template. 
 @Component({
     selector: 'my-hero-detail',
-    templateUrl: 'app/hero-detail.component.html',
+    templateUrl: 'app/heroes/hero-detail.component.html',
 })
 
 export class HeroDetailComponent implements OnInit{
-    //https://angular.io/docs/ts/latest/guide/attribute-directives.html#!#input
-    //leaving off parens results in an undiagnosable error and compiler doesn't notice
-    //what does this do?
+
+    //consumers of directive HeroDetailComponent can only bind to the property of our public API
     @Input()
     hero: Hero;
     //(1) IN WITH NEW:  HDC should get id from the RouteParameters service and fetch that hero from storage
@@ -43,3 +42,10 @@ export class HeroDetailComponent implements OnInit{
     }
 
 }
+
+/**
+    @Input - //https://angular.io/docs/ts/latest/guide/attribute-directives.html#!#input
+    //leaving off parens results in an undiagnosable error and compiler doesn't notice
+    //what does this do?
+
+*/

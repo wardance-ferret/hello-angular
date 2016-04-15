@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="styles.css">
 
     <!-- Auth0 Lock script -->
-    <!-- what does this do? -->
     <script src="//cdn.auth0.com/js/lock-9.0.min.js"></script>
     
     <!-- 1. Load libraries -->
@@ -24,7 +23,7 @@
     <script src="node_modules/angular2/bundles/http.dev.js"></script>
     <!-- 2. Configure SystemJS -->
     <!-- Why can't angular-jwt be sourced like a script? -->
-    <!-- include in map?! "dotenv": "node_modules/dotenv/lib/main.js" -->
+    <!-- include in map? "dotenv": "node_modules/dotenv/lib/main.js" -->
     <script>
       System.config({
         packages: {        
@@ -43,8 +42,7 @@
       System.import('app/main')
             .then(null, console.error.bind(console));
     </script>
-    <!-- must add this b/c angular routing is not required, and so there is no base route??  -->
-    <!-- If the base element is not added to the doc, then I get an unhandled promise rejection, error during instantiation of LocationStrategy (RouterLink -> Router -> Location -> LocationStrategy)-->
+
     <base href="/">
   </head>
   <!-- 3. Display the application -->
@@ -53,7 +51,11 @@
   </body>
 </html>
 
-
+<!--
+Notes:
+must add <base href="/"> b/c angular routing is not required, and so there is no base route??  -->
+    <!-- If the base element is not added to the doc, then I get an unhandled promise rejection, error during instantiation of LocationStrategy (RouterLink -> Router -> Location -> LocationStrategy)
+-->
 
 
 

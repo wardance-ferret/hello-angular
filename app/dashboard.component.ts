@@ -5,10 +5,6 @@ import {Hero} from './heroes/hero';
 import {HeroService} from './heroes/hero.service';
 import {Router} from 'angular2/router';
 
-//it seems like we're initializing a decorator object with a json object (define this somewhere)
-//use templateUrl property to point to a new template file
-//note: our templateUrl must go all the way back to app, it cannot be relative
-
 @Component({
     selector: 'my-dashboard',
     templateUrl: 'app/dashboard.component.html',
@@ -21,7 +17,7 @@ export class DashboardComponent implements OnInit{
         private _router: Router,
         private _heroService : HeroService){}
 
-    //learn:  good use of arrow => functions (i.e. anonymous functions).  the result is bound to the "this" object.
+
     ngOnInit() {
         this._heroService.getHeroes()
         .map(resp => resp.json())
@@ -37,3 +33,13 @@ export class DashboardComponent implements OnInit{
     }
 
 }
+
+/**
+Notes:
+//it seems like we're initializing a decorator object with a json object (define this somewhere)
+//use templateUrl property to point to a new template file
+//note: our templateUrl must go all the way back to app, it cannot be relative
+
+//learn:  good use of arrow => functions (i.e. anonymous functions).  the result is bound to the "this" object.
+
+*/

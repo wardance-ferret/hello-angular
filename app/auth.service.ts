@@ -1,21 +1,15 @@
 /** auth.service.ts */
 import { Injectable } from 'angular2/core';
 import { tokenNotExpired } from 'angular2-jwt';
-//import { dotenv } from 'dotenv';
-//this is of type any (?!)
 
 declare var Auth0Lock: any;
-
 
 @Injectable()
 export class AuthService {
 
-    //this is a lock associated with the user and a domain which lets them take their authenticated status and use
-    //it somewhere else (isn't that the definition of an JWT?)  See also https://jwt.io/introduction/
-    lock: Auth0Lock = new Auth0Lock(YOUR_CLIENT_ID, YOUR_CLIENT_DOMAIN);
-    
-    //if you want to modify your middleware (express-jwt) a good place to start is to read:
-    //https://github.com/auth0/express-jwt/blob/master/README.md
+
+    lock: Auth0Lock = new Auth0Lock('mkVFHkE5AvOhy7wthf9FuarwUkxn1x5q', 'wardance-ferret.auth0.com');
+
 
     login(){
         this.lock.show();
@@ -53,3 +47,13 @@ export class AuthService {
     }//getAuthDetails()
 
 }
+
+/**
+Notes:
+    //Auth0 is an authentication broker that supports authentication with identity providers like Google.
+    //lock is a widget to add SSO to this app. Lock accepts a user and a domain as input and authenticates the user with an identify provider in Auth0.  This lets the user take their authenticated status and use
+    //it somewhere else (isn't that the definition of an JWT?).  There are other ways of doing this also.  See also https://jwt.io/introduction/
+
+    //if you want to modify your middleware (express-jwt) a good place to start is to read:
+    //https://github.com/auth0/express-jwt/blob/master/README.md
+*/

@@ -9,7 +9,7 @@ import { tokenNotExpired } from 'angular2-jwt';
 
 @Component({
     selector: 'my-secret-hero-detail',
-    templateUrl: 'app/hero-detail.component.html'
+    templateUrl: 'app/heroes/hero-detail.component.html'
 }
 )
 @CanActivate(() => tokenNotExpired())
